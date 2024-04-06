@@ -41,6 +41,14 @@ class Rate_table:
             res[k] = self.last_table[k]
         return res
 
+    # Devolução de uma lista de candles
+    def get_candles(self) -> list:
+        return [(self.last_table["Open"][i],
+                self.last_table["High"][i],
+                self.last_table["Low"][i],
+                self.last_table["Close"][i])
+                for i in range(len(self.last_table["Open"]))]
+
     def get_last_obv(self) -> int:
         if not self.last_table.empty:
             for i in self.last_table["Volume"]:
@@ -48,4 +56,4 @@ class Rate_table:
         table = self.get_rate_table("1d", "1d")
         if table["Volume"].any():
             return table["Volume"][0]
-        return None
+        return 35683977532
