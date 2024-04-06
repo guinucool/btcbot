@@ -9,7 +9,7 @@ Após dar `git clone` do projeto é aconselhado o uso dos seguintes comandos de 
 
 A partir daí podem ser instaladas libs como o flask ou alteradas versões de dependências sem modificar o sistema diretamente. Aqui estão as ferramentas necessárias à compilação do projeto:
 
-    $ pip install Flask
+    $ pip install flask
     $ pip install requests
     $ pip install yfinance --upgrade --no-cache-dir
 

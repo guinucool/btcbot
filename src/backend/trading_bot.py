@@ -1,15 +1,16 @@
+import threading
+import time
+
 import api_caller as api
 from wallet import Wallet
 from candle_chart import Candle_chart
-from math import inf
-
-counter = 0
 
 # Classe do trading bot
 class Trading_bot:
 
     # Inicialização
     def __init__(self, wallet : Wallet, cycles = 5, secs = 10) -> None:
+        print("bot: loading...")
         self.wallet = wallet                                            # wallet: carteira do bot
         self.rtable = api.Rate_table("BTC-USD")                         # rtable: tabela de preços, formato yf.Ticker.history
         self.rtable.get_rate_table("1mo", "2m")
@@ -20,19 +21,34 @@ class Trading_bot:
         self.inds = {}                                                  # inds: indicadores
         return
 
+    # Gets
+    def get_ind(self):
+        return self.inds
+    
+    def get_balance(self):
+        return self.wallet.get_usd(), self.wallet.get_btc()
+    
+    # Transação
+    def buy_btc(self, btc : float) -> bool:
+
+        bool = self.wallet.add_transaction
+
     # Ciclo de feed
     def cycle(self) -> None:
-        global counter
-        global i
-        #bid = api.get_rate_btc_usd_now("bid")
-        bid = self.chart.candles[-i].get_close()
-        if counter == self.cycles:
-            counter = 0
-            self.chart.add_candle(bid)
-        else:
-            counter += 1
-            self.chart.update_candle(bid)
-        return
+        i = 1
+        ###
+        counter = 0
+        while True:
+            #bid = api.get_rate_btc_usd_now("bid")
+            bid = self.chart.candles[-i].get_close()
+            if counter == self.cycles:
+                counter = 0
+                self.chart.add_candle(bid)
+                print(self.cinds())
+            else:
+                counter += 1
+                self.chart.update_candle(bid)
+            time.sleep(self.secs)
 
     # Cálculo de indicadores
     def cinds(self) -> dict[float]:
@@ -51,15 +67,7 @@ class Trading_bot:
         }
         self.inds = inds
         return inds
-
-s = 0.1
-i = 1
-import time
-print("bot: loading...")
-bot = Trading_bot(Wallet(1000), secs=s)
-print("bot: online")
-while(True):
-    bot.cycle()
-    #print(bot.chart.candles[0].__str__())
-    i += 1
-    time.sleep(s)
+    
+    def start(self):
+        print("bot: online")
+        threading.Thread(target = self.cycle()).start()
