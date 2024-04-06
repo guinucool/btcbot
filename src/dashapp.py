@@ -4,8 +4,16 @@ from dash import dcc, html
 import plotly.graph_objs as go
 import pandas as pd
 
+from backend.trading_bot import Trading_bot, Wallet
+
+bot = Trading_bot(Wallet(1000), cycles=5, secs=10)
+
+candles = bot.get_chart()   
+
+df = pd.DataFrame(candles)
+
 # Suponha que 'df' é o seu DataFrame com os dados das velas
-df = pd.DataFrame({
+dfTest = pd.DataFrame({
     'Date': pd.date_range(start='2021-01-01', periods=5, freq='D'),
     'Open': [100, 102, 104, 106, 108],
     'High': [105, 107, 109, 111, 113],

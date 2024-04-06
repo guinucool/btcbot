@@ -1,9 +1,9 @@
 import threading
 import time
 
-import api_caller as api
-from wallet import Wallet
-from candle_chart import Candle_chart
+import backend.api_caller as api
+from backend.wallet import Wallet
+from backend.candle_chart import Candle_chart
 
 # Classe do trading bot
 class Trading_bot:
