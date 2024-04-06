@@ -1,4 +1,4 @@
-from candle import Candle
+from backend.candle import Candle
 
 # Classe de gráfico de vela
 class Candle_chart:
@@ -11,6 +11,12 @@ class Candle_chart:
         self.ema = self.alg_sma(12)                 # ema: valor da média móvel exponencial
         self.obv = obv                              # obv: valor do on balance volume
 
+    # Gets
+    def get_candles(self) -> list:
+        return [(candle.get_open(), candle.get_high(),
+                 candle.get_low(), candle.get_close())
+                for candle in self.candles]
+        
     # Adição da vela mais recententemente capturada
     def add_candle(self, svalue : float) -> None:
         value = float(svalue)
