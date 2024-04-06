@@ -1,0 +1,218 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: white;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: left; /* Centraliza o dashboard horizontalmente */
+    height: 100vh; /* Faz o body ocupar a altura total da viewport */
+}
+
+.dashboard {
+    width: 25vw; /* Define a largura para 25% da viewport */
+    border-radius: 10px;
+    color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os componentes internos do dashboard */
+}
+
+.bitcoin-prices, .bot-status, .manual-bidding {
+    background-color: #171C27;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.bitcoin-prices {
+    height: 25%;
+}
+
+.bot-status {
+    height: 50%;
+}
+
+.bot-status .bot-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* Para posicionar absolutamente o status-indicator */
+    padding: 10px 20px; /* Ajuste conforme necessário */
+}
+
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.bot-name label {
+    position: absolute;
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 75px; /* Aumentado de 50px */
+    height: 37.5px; /* Aumentado de 25px */
+    background: grey;
+    display: block;
+    border-radius: 75px; /* Aumentado para manter a proporção do arredondamento */
+    position: relative;
+}
+
+.bot-name label:after {
+    content: '';
+    position: absolute;
+    top: 1.875px; /* Aumentado de 1.25px */
+    left: 1.875px; /* Aumentado de 1.25px */
+    width: 33.75px; /* Aumentado de 22.5px */
+    height: 33.75px; /* Aumentado de 22.5px */
+    background: #2C332C;
+    border-radius: 50%; /* Permanece como 50% para manter forma circular */
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para a alavanca */
+}
+
+input:checked + label {
+    background: #6CE686;
+}
+
+input:checked + label:after {
+    left: calc(100% - 1.875px); /* Ajuste o espaço à direita após aumentar */
+    transform: translateX(-100%);
+}
+
+label:active:after {
+    width: 48.75px; /* Aumentado de 32.5px */
+}
+
+
+.sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sliders label {
+    color: #fff;
+}
+
+.sliders input[type="range"] {
+    -webkit-appearance: none; /* Remove a aparência padrão */
+    width: 100%; /* Largura total do container */
+    height: 8px; /* Altura da barra do slider */
+    border-radius: 5px; /* Bordas arredondadas */
+    background: #fff; /* Cor de fundo da barra */
+    outline: none; /* Remove o contorno ao focar */
+    opacity: 0.7; /* Transparência */
+    -webkit-transition: .2s; /* Transição suave */
+    transition: opacity .2s;
+}
+
+.sliders input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Remove a aparência padrão */
+    appearance: none;
+    width: 18px; /* Largura do thumb */
+    height: 18px; /* Altura do thumb */
+    border-radius: 50%; /* Forma circular */
+    background: #4CAF50; /* Cor de fundo do thumb */
+    cursor: pointer; /* Cursor tipo ponteiro */
+}
+
+.sliders input[type="range"]::-moz-range-thumb {
+    width: 18px; /* Largura do thumb */
+    height: 18px; /* Altura do thumb */
+    border-radius: 50%; /* Forma circular */
+    background: #4CAF50; /* Cor de fundo do thumb */
+    cursor: pointer; /* Cursor tipo ponteiro */
+}
+
+.sliders input[type="range"]:focus {
+    opacity: 1; /* Faz a barra totalmente opaca quando focada */
+}
+
+.status-indicator {
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.manual-bidding {
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.title {
+    align-self: center; /* Centraliza apenas o título */
+    margin: 0 0 20px 0; /* Espaço abaixo do título */
+    color: white; /* Cor do texto do título */
+    font-size: 24px; /* Tamanho do texto do título */
+    /* Estilos adicionais... */
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-group input[type=number] {
+    /* Estilos para o campo de entrada */
+    padding: 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    width: 100px; /* Ou a largura que desejar */
+}
+
+#buyButton {
+    /* Estilos para o botão Buy */
+    background-color: #4CAF50; /* Verde */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#sellButton {
+    /* Estilos para o botão Sell */
+    background-color: #f44336; /* Vermelho */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.manual-bidding button#sellButton {
+    background-color: #f44336; /* Red */
+}
+
+.btc {
+    display: flex;
+    justify-content: space-between;
+}
+
+.prices .buy{
+    display: flex;
+    justify-content: space-between;
+}
+
+.prices .sell{
+    display: flex;
+    justify-content: space-between;
+}
+
+.price-change {
+    display: flex;
+    justify-content: center;
+}
+

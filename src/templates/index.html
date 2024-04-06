@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Seção de Cotação de Bitcoin -->
+        <div class="bitcoin-prices">
+            <div class="btc">
+                <span>🔥 BTC</span>
+                <select>
+                    <option value="USD">USD</option>
+                </select>
+            </div>
+            <div class="prices">
+                <div class="buy">Buy: <span id="buyPrice">67692.603$</span></div>
+                <div class="sell">Sell: <span id="sellPrice">67650.038$</span></div>
+            </div>
+            <div class="price-change">
+                +165,4 (+0.03%) 🔼
+            </div>
+        </div>
+
+        <!-- Seção do Bot -->
+        <div class="bot-status">
+            <div class="bot-name">
+                <span>😊 BiskerBot</span>
+                <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
+            </div>
+            <div class="funds">
+                <div>USD <span id="usdFunds">835$</span></div>
+                <div>BTC <span id="btcFunds">0,0023</span></div>
+                <div>Total <span id="totalFunds">991$</span></div>
+            </div>
+
+            <!-- Sliders -->
+            <div class="sliders">
+                <div>
+                    <label for="biddingRange">Bidding Range</label>
+                    <input type="range" id="biddingRange" name="biddingRange">
+                </div>
+                <div>
+                    <label for="riskMultiplier">Risk Multiplier</label>
+                    <input type="range" id="riskMultiplier" name="riskMultiplier">
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Bidding -->
+        <div class="manual-bidding">
+            <h2 class="title">Manual Bidding</h2>
+            <div class="input-group">
+                <button id="buyButton">Buy</button>
+                <input type="number" id="buyAmount" placeholder="Amount">
+            </div>
+            <div class="input-group">
+                <button id="sellButton">Sell</button>
+                <input type="number" id="sellAmount" placeholder="Amount">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
