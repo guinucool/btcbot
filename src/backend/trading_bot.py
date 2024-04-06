@@ -31,6 +31,9 @@ class Trading_bot:
     
     def get_chart(self) -> list:
         return self.chart.get_candles()
+    
+    def get_interval(self) -> int: # secs
+        return self.secs * self.cycles
 
     # Transação
     def buy_btc(self, btc : float) -> bool:

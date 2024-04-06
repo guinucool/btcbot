@@ -12,6 +12,7 @@ A partir daí podem ser instaladas libs como o flask ou alteradas versões de de
     $ pip install flask
     $ pip install requests
     $ pip install yfinance --upgrade --no-cache-dir
+    $ pip install dash
 
 ## Plano de desenvolvimento
 
