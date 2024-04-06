@@ -1,5 +1,20 @@
 # Trading Bot em BTC
 
+## Setup
+
+Após dar `git clone` do projeto é aconselhado o uso dos seguintes comandos de modo a criar um **virtual environment**:
+
+    $ python3 -m venv .venv
+    $ . .venv/bin/activate
+
+A partir daí podem ser instaladas libs como o flask ou alteradas versões de dependências sem modificar o sistema diretamente. Aqui estão as ferramentas necessárias à compilação do projeto:
+
+    $ pip install Flask
+    $ pip install requests
+    $ pip install yfinance --upgrade --no-cache-dir
+
+## Plano de desenvolvimento
+
 ```mermaid
 flowchart LR
     Trading_Bot -- tem --> Candle_Chart
