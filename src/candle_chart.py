@@ -4,10 +4,11 @@ from candle import Candle
 class Candle_chart:
 
     # Inicialização parametrizada
-    def __init__(self, candles : list[Candle], cycles : int) -> None:
+    def __init__(self, candles : list[Candle], cycles : int, obv = 62277632) -> None:
         self.candles = candles          # candles: lista de velas, candles[0] é a vela mais recente
         self.cycles = cycles            # cycles: número de ciclos por vela
         self.ema = self.alg_sma(12)     # ema: valor da média móvel exponencial
+        self.obv = obv                  # obv: valor do on balance volume
 
     # Adição da vela mais recententemente capturada
     def add_candle(self, candle : Candle) -> None:
@@ -27,8 +28,13 @@ class Candle_chart:
         return cycles // self.cycles
 
     # Média de velas entre posições
-    def avg_pos(self, ipos : int, epos : int) -> float:
+    def avg_pos(self, epos : int, ipos = 0) -> float:
         return sum([candle.get_avg() for candle in self.candles[ipos:epos]]) / (epos - ipos)
+
+    # Minimo e máximo de um número de velas
+    def min_max(self, epos : int, ipos = 0,) -> tuple[float, float]:
+        return (min([candle.get_low() for candle in self.candles[ipos:epos]]),
+                max([candle.get_high() for candle in self.candles[ipos:epos]]))
 
     # Cálculo do SMA para um número de velas
     def alg_sma(self, candles : int) -> float:
@@ -42,10 +48,8 @@ class Candle_chart:
             close_pr = self.candles[i * frame].get_close()
             open_pr = self.candles[i * frame].get_open()
             delta = close_pr - open_pr
-            if delta > 0:
-                gain += delta
-            else:
-                loss -= delta
+            if delta > 0:   gain += delta
+            else:           loss -= delta
         gain = gain / 14
         loss = loss / 14
         if loss == 0:
@@ -66,13 +70,29 @@ class Candle_chart:
         sline = self.alg_ema(9, frame)
         return mline - sline
 
-# Teste
-candle_l = [Candle(1, 2, 0.5, 1.5), Candle(1.5, 2.5, 1, 2), Candle(2, 3, 1.5, 2.5),
-            Candle(2.5, 3.5, 2, 3), Candle(3, 8.5, 2.5, 7.5), Candle(7.5, 4.5, 3, 4),
-            Candle(4, 5, 3, 3.5), Candle(3.5, 4.5, 3, 4), Candle(4, 5, 3.5, 4.5),
-            Candle(4.5, 5.5, 4, 5), Candle(5, 6, 4.5, 5.5), Candle(5.5, 6.5, 5, 6),
-            Candle(6, 7, 4, 4), Candle(4, 5, 3, 3.5), Candle(3.5, 4.5, 3, 3)]
-c = Candle_chart(candles = candle_l, cycles = 5)
+    # Cálculo do Fibonacci
+    def alg_fib_d(self, frame : int) -> float:
+        min_pr, max_pr = self.min_max(frame)
+        ratio = min_pr / max_pr
+        if ratio < 0.236: return 0.236
+        elif ratio < 0.382: return 0.382
+        elif ratio < 0.5: return 0.5
+        elif ratio < 0.618: return 0.618
+        elif ratio < 0.786: return 0.786
+        return 1
+    
+    # Cálculo do Fibonacci, contínuo
+    def alg_fib_c(self, frame : int) -> float:
+        min_pr, max_pr = self.min_max(frame)
+        ratio = min_pr / max_pr
+        return ratio
+    
+    # Cálculo do OBV
+    def alg_obv(self, volume : int, frames : int) -> int:
+        cond = self.candles[0].get_close() > self.candles[frames].get_close() 
+        if self.candles[0].get_close() == self.candles[frames].get_close():
+            return self.obv
 
-print(c.alg_ema(5, 1))
-print(c.alg_rsi(1))
+        if cond:    self.obv = self.obv + volume
+        else:       self.obv = self.obv - volume
+        return self.obv

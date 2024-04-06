@@ -1,7 +1,9 @@
 import requests
 import yfinance as yf
 
-# TODO Implementar cache -> yf.set_tz_cache_location("custom/cache/location")
+# Tabela de currencies específicas
+def get_rate_table(tickers, period, interval) -> yf.Ticker.history:
+    return yf.download(tickers = tickers, period = period, interval = interval)
 
 # Retorna o preço do Bitcoin em USD, bisk = "ask" ou "bid"
 # NOTE bid = preço mais alto que o comprador paga, ask = preço mais baixo que o vendedor aceita
@@ -9,9 +11,10 @@ def get_rate_btc_usd_now(bisk) -> float:
     response = requests.get("https://api.uphold.com/v0/ticker/BTC-USD")
     return response.json()[bisk]
 
-# Tabela de currencies específicas
-def get_rate_table(tickers, period, interval) -> yf.Ticker.history:
-    return yf.download(tickers = tickers, period = period, interval = interval)
+# Retorna o fear and greed index
+def get_fng() -> float:
+    response = requests.get("https://api.alternative.me/fng/")
+    return response.json()["data"][0]["value"]
 
 # Classe que gere tabelas de preços
 class Rate_table:
@@ -20,6 +23,7 @@ class Rate_table:
     def __init__(self, currency : str) -> None:
         self.ticker = yf.Ticker(currency)
         self.last_table = None
+        yf.set_tz_cache_location("src/__pycache__/yfinance_cache")
 
     def get_last_table(self) -> yf.Ticker.history:
         return self.last_table
@@ -36,3 +40,12 @@ class Rate_table:
         for k in ["Open", "High", "Low", "Close"]:
             res[k] = self.last_table[k]
         return res
+
+    def get_last_obv(self) -> int:
+        if not self.last_table.empty:
+            for i in self.last_table["Volume"]:
+                if i != 0: return i
+        table = self.get_rate_table("1d", "1d")
+        if table["Volume"].any():
+            return table["Volume"][0]
+        return None
