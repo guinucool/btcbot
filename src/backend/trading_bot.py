@@ -19,19 +19,37 @@ class Trading_bot:
         self.cycles = cycles                                            # cycles: número de ciclos por vela
         self.secs = secs                                                # secs: segundos por ciclo
         self.inds = {}                                                  # inds: indicadores
+        # Customizables aqui
         return
 
     # Gets
-    def get_ind(self):
+    def get_ind(self) -> dict[float]:
         return self.inds
     
-    def get_balance(self):
+    def get_balance(self) -> tuple[float, float]:
         return self.wallet.get_usd(), self.wallet.get_btc()
     
+    def get_chart(self) -> list:
+        return self.chart.get_candles()
+
     # Transação
     def buy_btc(self, btc : float) -> bool:
+        rate = api.get_rate_btc_usd_now("bid")
+        try:
+            self.wallet.add_transaction(btc, btc * rate, rate)
+            return True
+        except Exception as e:
+            print("Error:", e)
+        return False
 
-        bool = self.wallet.add_transaction
+    def sell_btc(self, btc : float) -> bool:
+        rate = api.get_rate_btc_usd_now("ask")
+        try:
+            self.wallet.add_transaction(-btc, -btc * rate, rate)
+            return True
+        except Exception as e:
+            print("Error:", e)
+        return False
 
     # Ciclo de feed
     def cycle(self) -> None:
@@ -44,7 +62,6 @@ class Trading_bot:
             if counter == self.cycles:
                 counter = 0
                 self.chart.add_candle(bid)
-                print(self.cinds())
             else:
                 counter += 1
                 self.chart.update_candle(bid)
@@ -70,4 +87,10 @@ class Trading_bot:
     
     def start(self):
         print("bot: online")
-        threading.Thread(target = self.cycle()).start()
+        threading.Thread(target = lambda: self.cycle()).start()
+        print("bot: cycle started")
+
+# Teste
+t = Trading_bot(Wallet(1000), secs=0.3)
+t.start()
+t.buy_btc(0.1)

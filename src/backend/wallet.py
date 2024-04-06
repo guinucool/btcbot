@@ -33,7 +33,7 @@ class Wallet:
     # Adição de uma transação à carteira
     def add_transaction(self, btc : float, usd : float, rate : float) -> bool:
         if self.usd - usd < 0 or self.btc - btc < 0:
-            return None
+            raise Exception("[WALLET] Insufficient funds.")
         self.usd += usd
         self.btc += btc
         self.history.append({
@@ -45,4 +45,3 @@ class Wallet:
             "btc_balance": self.btc
             })
         return True
-    
