@@ -8,13 +8,6 @@ class Candle:
         self.low = low
         self.close = close
 
-    # Inicialização com valor único, para live rates
-    def __init__(self, value : float) -> None:
-        self.open = value
-        self.high = value
-        self.low = value
-        self.close = value
-
     # Atualização a vela com um novo valor
     def feed(self, value : float) -> None:
         self.close = value
@@ -35,6 +28,9 @@ class Candle:
     
     def get_low(self) -> float:
         return self.low
+
+    def get_avg(self) -> float:
+        return (self.high + self.low) / 2
 
     # ToString
     def __str__(self) -> str:
