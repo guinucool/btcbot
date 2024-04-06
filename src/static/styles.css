@@ -86,6 +86,25 @@ label:active:after {
     width: 48.75px; /* Aumentado de 32.5px */
 }
 
+.funds {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.funds div {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Adicione os estilos de texto conforme necessário */
+.funds span {
+    /* Estilos para os valores */
+    min-width: 60px; /* Defina uma largura mínima para alinhar todos os valores à direita */
+    text-align: right; /* Alinha o texto à direita */
+}
+
+
 
 .sliders {
     display: flex;
@@ -95,6 +114,11 @@ label:active:after {
 
 .sliders label {
     color: #fff;
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.5vw; 
 }
 
 .sliders input[type="range"] {
@@ -216,3 +240,37 @@ label:active:after {
     justify-content: center;
 }
 
+/* Adaptação do texto ao espaço disponível */
+.funds div, .prices div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.funds span, .prices span {
+    white-space: nowrap; /* Mantém o texto em uma única linha */
+    overflow: hidden; /* Impede que o texto ultrapasse o elemento */
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+    max-width: 100px; /* Você pode ajustar isso conforme necessário */
+}
+
+/* Sliders e Labels */
+.sliders label {
+    color: #fff;
+    white-space: nowrap; /* Mantém o texto em uma única linha */
+}
+
+/* Para botões e inputs de manual bidding */
+.manual-bidding .input-group button,
+.manual-bidding .input-group input[type=number] {
+    white-space: nowrap; /* Evita que o texto quebre em mais de uma linha */
+}
+
+/* Adicione um max-width aos botões se necessário para garantir que eles não ocupem mais espaço do que devem */
+.manual-bidding .input-group button {
+    max-width: 100px; /* Ajuste conforme necessário */
+}
+
+.manual-bidding .input-group input[type=number] {
+    max-width: 100px; /* Ajuste conforme necessário */
+}
