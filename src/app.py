@@ -29,6 +29,11 @@ def get_price_change():
     res = f"{str(perc * float(bot.btc_bisk[0]) / 100)[:5]}" + "   " + f"({str(perc)[:5]}%)" + "  " + ('🔼' if perc > 0 else '🔽' if perc < 0 else '🟰')
     return {"priceChange": res}
 
+def get_history():
+    hist = bot.wallet.get_history()[0:5]
+    hist = str(hist)
+    return {"history": hist}
+
 @app.route('/buy_price')
 def buy_price():
     return jsonify(get_buy_price())
@@ -48,6 +53,10 @@ def wallet_USD():
 @app.route('/wallet_BTC')
 def wallet_BTC():
     return jsonify(get_wallet_BTC())
+
+@app.route('/history')
+def history():
+    return jsonify(get_history())
 
 @app.route('/')
 def index():

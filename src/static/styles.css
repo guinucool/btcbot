@@ -42,6 +42,34 @@ body {
     padding: 10px 20px; /* Ajuste conforme necessário */
 }
 
+.history {
+    margin-top: auto; /* Pushes the history section to the bottom */
+    padding-top: 20px; /* Adds some spacing at the top */
+    border-top: 1px solid white; /* Adds a border at the top */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds spacing between history items */
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #171C27;
+    border-radius: 10px;
+    color: white;
+}
+
+.history-item .timestamp {
+    font-size: 14px;
+}
+
+.history-item .description {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
 input[type=checkbox] {
     height: 0;
     width: 0;

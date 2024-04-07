@@ -64,6 +64,7 @@
                 <input type="number" id="sellAmount" placeholder="Amount">
             </div>
         </div>
+
     </div>
     <script>
         function fetchPrices() {
@@ -72,19 +73,23 @@
             var priceChangeCall = $.getJSON('/price_change');
             var walletUsdCall = $.getJSON('/wallet_USD');
             var walletBtcCall = $.getJSON('/wallet_BTC');
+            var historyCall = $.getJSON('/history');
     
-            $.when(buyPriceCall, sellPriceCall, walletUsdCall, walletBtcCall,priceChangeCall).done(function(buyData, sellData, usdData, btcData,priceChangeData) {
+            $.when(buyPriceCall, sellPriceCall, walletUsdCall, walletBtcCall,priceChangeCall, historyCall)
+            .done(function(buyData, sellData, usdData, btcData,priceChangeData, historyCall) {
                 var buyPrice = buyData[0].buyPrice;
                 var sellPrice = sellData[0].sellPrice;
                 var walletUSD = usdData[0].wallet_USD;
                 var walletBTC = btcData[0].wallet_BTC;
                 var priceChange = priceChangeData[0].priceChange;
+                var history = historyCall[0].history;
     
                 // Atualizar os elementos da DOM com os valores obtidos
                 $('#buyPrice').text(buyPrice + '$');
                 $('#sellPrice').text(sellPrice + '$');
                 $('#usdFunds').text(walletUSD + '$');
                 $('#btcFunds').text(walletBTC);
+                $('#history').text(history);
     
                 // Calcular e exibir o total de fundos
                 var totalFunds = walletUSD + (walletBTC * sellPrice);

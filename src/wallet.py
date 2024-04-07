@@ -8,6 +8,22 @@ class Wallet:
         self.btc = 0
         self.usd = balance
         self.history = []
+        self.history.append({
+            "date": datetime.datetime.now(),
+            "usd": 30,
+            "btc": 30 / 63000,
+            "rate": 63000,
+            "usd_balance": balance,
+            "btc_balance": 0
+            })
+        self.history.append({
+            "date": datetime.datetime.now(),
+            "usd": 40,
+            "btc": 40 / 65000,
+            "rate": 65000,
+            "usd_balance": balance + 20,
+            "btc_balance": 0
+            })
         self.lim_btc = None
         self.lim_usd = None
 
