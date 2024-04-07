@@ -54,6 +54,7 @@ bot_active = False
 
 if __name__ == '__main__':
     if not bot_active:
+        bot_active = True
         Trading_bot(Wallet(1000), cycles=1, secs=10)
         bot.start()
         app.run(debug=True)
