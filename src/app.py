@@ -44,8 +44,6 @@ def wallet_USD():
 def wallet_BTC():
     return jsonify(get_wallet_BTC())
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
