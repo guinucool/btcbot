@@ -11,8 +11,10 @@ bot.start()
 
 @app.route('/price_change')
 def price_change():
-    
-    return jsonify({"priceChange": "+165,4", "percentChange": "+0.03%", "direction": "🔼"})
+    percentage = bot.btc_bisk[0] / (bot.chart.alg_sma(50)) - 1
+    return jsonify({"priceChange": f"{percentage * bot.btc_bisk[0]}",
+                    "percentChange": f"{percentage}%",
+                    "direction": '🔼' if percentage > 0 else '🔽' if percentage < 0 else '🟰'})
 
 def get_buy_price():
     ask = bot.btc_bisk[1]
@@ -48,8 +50,10 @@ def wallet_BTC():
 def index():
     return render_template('index.html')
 
+bot_active = False
+
 if __name__ == '__main__':
-    bot_active = True
-    bot = Trading_bot(Wallet(1000), cycles=1, secs=5)
-    bot.start()
-    app.run(debug=True)
+    if not bot_active:
+        Trading_bot(Wallet(1000), cycles=1, secs=5)
+        bot.start()
+        app.run(debug=True)
