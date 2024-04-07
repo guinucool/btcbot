@@ -19,6 +19,7 @@ class Trading_bot:
         self.cycles = cycles                                            # cycles: número de ciclos por vela
         self.secs = secs                                                # secs: segundos por ciclo
         self.inds = {}                                                  # inds: indicadores
+        self.btc_bisk = 0, 0                                            # btc_price: bid e ask do Bitcoin
         # Customizables aqui
         return
 
@@ -34,21 +35,24 @@ class Trading_bot:
     
     def get_interval(self) -> int: # secs
         return self.secs * self.cycles
+    
+    def get_bisk(self) -> tuple[float, float]:
+        return self.btc_bisk
 
-    # Transação
-    def buy_btc(self, btc : float) -> bool:
-        rate = float(api.get_rate_btc_usd_now("bid"))
+    # Transações
+    def sell_btc(self, btc : float) -> bool:
+        rate = self.btc_bisk[0]
         try:
-            self.wallet.add_transaction(btc, btc * rate, rate)
+            self.wallet.add_transaction(-btc, -btc * rate, rate)
             return True
         except Exception as e:
             print("Error:", e)
         return False
-
-    def sell_btc(self, btc : float) -> bool:
-        rate = float(api.get_rate_btc_usd_now("ask"))
+    
+    def buy_btc(self, btc : float) -> bool:
+        rate = self.btc_bisk[1]
         try:
-            self.wallet.add_transaction(-btc, -btc * rate, rate)
+            self.wallet.add_transaction(btc, btc * rate, rate)
             return True
         except Exception as e:
             print("Error:", e)
@@ -60,8 +64,10 @@ class Trading_bot:
         ###
         counter = 0
         while True:
-            #bid = api.get_rate_btc_usd_now("bid")
+            bid, ask = float(api.get_rate_btc_usd_now("bid")), float(api.get_rate_btc_usd_now("ask"))
+            self.btc_bisk = bid, ask
             bid = self.chart.candles[-i].get_close()
+            self.btc_price = bid
             if counter == self.cycles:
                 counter = 0
                 self.chart.add_candle(bid)
@@ -92,8 +98,3 @@ class Trading_bot:
         print("bot: online")
         threading.Thread(target = lambda: self.cycle()).start()
         print("bot: cycle started")
-
-# Teste
-t = Trading_bot(Wallet(1000), secs=0.3)
-t.start()
-t.buy_btc(0.1)

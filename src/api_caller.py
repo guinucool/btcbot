@@ -43,10 +43,10 @@ class Rate_table:
 
     # Devolução de uma lista de candles
     def get_candles(self) -> list:
-        return [(self.last_table["Open"].iloc[i],
-                self.last_table["High"].iloc[i],
-                self.last_table["Low"].iloc[i],
-                self.last_table["Close"].iloc[i])
+        return [(self.last_table["Open"][i],
+                self.last_table["High"][i],
+                self.last_table["Low"][i],
+                self.last_table["Close"][i])
                 for i in range(len(self.last_table["Open"]))]
 
     def get_last_obv(self) -> int:
