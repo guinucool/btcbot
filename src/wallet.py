@@ -36,7 +36,7 @@ class Wallet:
             raise Exception("[WALLET] Insufficient funds.")
         self.usd += usd
         self.btc += btc
-        self.history.append({
+        self.history.insert(0, {
             "date": datetime.datetime.now(),
             "usd": usd,
             "btc": btc,

@@ -1,13 +1,14 @@
+import time
+
 from flask import Flask, render_template, jsonify
-from dashapp import create_dash_application  # Assume que você tenha esta função
+from dashapp import create_dash_app, update_dash_app
 
 from trading_bot import Trading_bot
 from wallet import Wallet
 
 app = Flask(__name__)
-bot = Trading_bot(Wallet(1000), cycles=1, secs=2)
-bot.start()
-#dash = create_dash_application(app)
+bot = Trading_bot(Wallet(1000), cycles=2, secs=5)
+create_dash_app(app, bot)
 
 def get_buy_price():
     ask = bot.btc_bisk[1]
@@ -52,11 +53,6 @@ def wallet_BTC():
 def index():
     return render_template('index.html')
 
-bot_active = False
-
 if __name__ == '__main__':
-    if not bot_active:
-        bot_active = True
-        Trading_bot(Wallet(1000), cycles=1, secs=10)
-        bot.start()
-        app.run(debug=True)
+    bot.start()
+    app.run(debug=True)

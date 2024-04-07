@@ -13,7 +13,7 @@ class Trading_bot:
         print("bot: loading...")
         self.wallet = wallet                                            # wallet: carteira do bot
         self.rtable = api.Rate_table("BTC-USD")                         # rtable: tabela de preços, formato yf.Ticker.history
-        self.rtable.get_rate_table("15d", "2m")
+        self.rtable.get_rate_table("3d", "2m")
         obv = self.rtable.get_last_obv()
         self.chart = Candle_chart(self.rtable.get_candles(), 2, obv)    # chart: gráfico de velas
         self.cycles = cycles                                            # cycles: número de ciclos por vela

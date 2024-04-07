@@ -1,44 +1,40 @@
 # dashapp.py
-import dash
 from dash import dcc, html
 import plotly.graph_objs as go
 import pandas as pd
+import dash
 
-from trading_bot import Trading_bot, Wallet
-
-def comment():
-    bot = Trading_bot(Wallet(1000), cycles=1, secs=10)
+def go_figure(bot):
     candles = bot.get_chart()
-
     df = pd.DataFrame(candles)
+    return go.Figure(data=[go.Candlestick(
+                    open=df[0], high=df[1],
+                    low=df[2], close=df[3])])
 
-    # Suponha que 'df' é o seu DataFrame com os dados das velas
-    dfTest = pd.DataFrame({
-        'Date': pd.date_range(start='2021-01-01', periods=5, freq='D'),
-        'Open': [100, 102, 104, 106, 108],
-        'High': [105, 107, 109, 111, 113],
-        'Low': [95, 97, 99, 101, 103],
-        'Close': [102, 104, 106, 108, 110]
-    })
-
-def create_dash_application(flask_app):
+def create_dash_app(flask_app, bot):
     dash_app = dash.Dash(server=flask_app, name="Candlestick", url_base_pathname='/dash/')
     
-    # Crie o layout do gráfico de velas com os dados de 'df'
-    fig = go.Figure(data=[go.Candlestick(x=df['Date'],
-                    open=df['Open'], high=df['High'],
-                    low=df['Low'], close=df['Close'])])
-    
-    # Define o layout do gráfico
+    fig = go_figure(bot)
     fig.update_layout(xaxis_rangeslider_visible=False)
 
-    # Define o layout da aplicação Dash
     dash_app.layout = html.Div(children=[
         html.H1(children="Gráfico de Velas"),
         dcc.Graph(
             id='example-graph',
-            figure=fig
-        )
-    ])
+            figure=fig)
+        ])
+    
+    return dash_app
 
+def update_dash_app(dash_app, bot):
+    fig = go_figure(bot)
+    fig.update_layout(xaxis_rangeslider_visible=False)
+
+    dash_app.layout = html.Div(children=[
+        html.H1(children="Gráfico de Velas"),
+        dcc.Graph(
+            id='example-graph',
+            figure=fig)
+        ])
+    
     return dash_app
