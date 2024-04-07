@@ -11,7 +11,7 @@ bot.start()
 
 def get_buy_price():
     ask = bot.btc_bisk[1]
-    return {"buyPrice": ask}
+    return {"buyPrice": str(ask)[:9]}
 
 def get_wallet_USD():
     return {"wallet_USD": bot.wallet.get_usd()}
@@ -21,11 +21,12 @@ def get_wallet_BTC():
 
 def get_sell_price():
     bid = bot.btc_bisk[0]
-    return {"sellPrice": bid}
+    return {"sellPrice": str(bid)[:9]}
 
 def get_price_change():
-    result = ""
-    return {"priceChange": result}
+    perc = float(bot.btc_bisk[0]) / bot.chart.alg_sma(50) - 1
+    res = f"{str(perc * float(bot.btc_bisk[0]) / 100)[:5]}" + "   " + f"({str(perc)[:5]}%)" + "  " + ('🔼' if perc > 0 else '🔽' if perc < 0 else '🟰')
+    return {"priceChange": res}
 
 @app.route('/buy_price')
 def buy_price():
