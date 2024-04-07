@@ -67,20 +67,37 @@
     </div>
     <script>
         function fetchPrices() {
-            $.getJSON('/buy_price', function(data) {
-                $('#buyPrice').text(data.buyPrice + '$');
-            });
-            $.getJSON('/sell_price', function(data) {
-                $('#sellPrice').text(data.sellPrice + '$');
-            });
-            $.getJSON('/price_change', function(data) {
-                $('.price-change').text(data.priceChange + " (" + data.percentChange + ") " + data.direction);
+            var buyPriceCall = $.getJSON('/buy_price');
+            var sellPriceCall = $.getJSON('/sell_price');
+            var priceChangeCall = $.getJSON('/price_change');
+            var walletUsdCall = $.getJSON('/wallet_USD');
+            var walletBtcCall = $.getJSON('/wallet_BTC');
+    
+            $.when(buyPriceCall, sellPriceCall, walletUsdCall, walletBtcCall).done(function(buyData, sellData, usdData, btcData) {
+                var buyPrice = buyData[0].buyPrice;
+                var sellPrice = sellData[0].sellPrice;
+                var walletUSD = usdData[0].wallet_USD;
+                var walletBTC = btcData[0].wallet_BTC;
+    
+                // Atualizar os elementos da DOM com os valores obtidos
+                $('#buyPrice').text(buyPrice + '$');
+                $('#sellPrice').text(sellPrice + '$');
+                $('#usdFunds').text(walletUSD + '$');
+                $('#btcFunds').text(walletBTC);
+    
+                // Calcular e exibir o total de fundos
+                var totalFunds = walletUSD + (walletBTC * sellPrice);
+                $('#totalFunds').text(totalFunds.toFixed(2) + '$'); // Arredonda para 2 casas decimais
+    
+                // Atualizar a mudança de preço
+                $('.price-change').text(priceChangeCall[0].priceChange + " (" + priceChangeCall[0].percentChange + ") " + priceChangeCall[0].direction);
             });
         }
-
+    
         // Atualiza os preços a cada segundo
         setInterval(fetchPrices, 1000);
     </script>
+    
     <iframe src="/dash/" width="100%" height="800px" style="border:none;"></iframe>
     
 </body>
