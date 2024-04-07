@@ -23,6 +23,10 @@ def get_sell_price():
     bid = bot.btc_bisk[0]
     return {"sellPrice": bid}
 
+def get_price_change():
+    result = ""
+    return {"priceChange": result}
+
 @app.route('/buy_price')
 def buy_price():
     return jsonify(get_buy_price())
@@ -33,10 +37,7 @@ def sell_price():
 
 @app.route('/price_change')
 def price_change():
-    percentage = (float(bot.btc_bisk[0]) / float(bot.chart.alg_sma(50))) * 100 - 1
-    return jsonify({"priceChange": f"{percentage * float(bot.btc_bisk[0]) / 100}",
-                    "percentChange": f"{percentage}%",
-                    "direction": '🔼' if percentage > 0 else '🔽' if percentage < 0 else '🟰'})
+    return jsonify(get_price_change())
 
 @app.route('/wallet_USD')
 def wallet_USD():

@@ -34,9 +34,9 @@
                 <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
             </div>
             <div class="funds">
-                <div>USD <span id="usdFunds">835$</span></div>
-                <div>BTC <span id="btcFunds">0,0023</span></div>
-                <div>Total <span id="totalFunds">991$</span></div>
+                <div>USD <span id="usdFunds">Loading...</span></div>
+                <div>BTC <span id="btcFunds">Loading...</span></div>
+                <div>Total <span id="totalFunds">Loading...</span></div>
             </div>
 
             <!-- Sliders -->
@@ -73,11 +73,12 @@
             var walletUsdCall = $.getJSON('/wallet_USD');
             var walletBtcCall = $.getJSON('/wallet_BTC');
     
-            $.when(buyPriceCall, sellPriceCall, walletUsdCall, walletBtcCall).done(function(buyData, sellData, usdData, btcData) {
+            $.when(buyPriceCall, sellPriceCall, walletUsdCall, walletBtcCall,priceChangeCall).done(function(buyData, sellData, usdData, btcData,priceChangeData) {
                 var buyPrice = buyData[0].buyPrice;
                 var sellPrice = sellData[0].sellPrice;
                 var walletUSD = usdData[0].wallet_USD;
                 var walletBTC = btcData[0].wallet_BTC;
+                var priceChange = priceChangeData[0].priceChange;
     
                 // Atualizar os elementos da DOM com os valores obtidos
                 $('#buyPrice').text(buyPrice + '$');
@@ -90,7 +91,7 @@
                 $('#totalFunds').text(totalFunds.toFixed(2) + '$'); // Arredonda para 2 casas decimais
     
                 // Atualizar a mudança de preço
-                $('.price-change').text(priceChangeCall[0].priceChange + " (" + priceChangeCall[0].percentChange + ") " + priceChangeCall[0].direction);
+                $('.price-change').text(priceChange);
             });
         }
     
