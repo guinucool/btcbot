@@ -6,19 +6,20 @@ import pandas as pd
 
 from trading_bot import Trading_bot, Wallet
 
-bot = Trading_bot(Wallet(1000), cycles=5, secs=10)
-candles = bot.get_chart()
+def comment():
+    bot = Trading_bot(Wallet(1000), cycles=1, secs=10)
+    candles = bot.get_chart()
 
-df = pd.DataFrame(candles)
+    df = pd.DataFrame(candles)
 
-# Suponha que 'df' é o seu DataFrame com os dados das velas
-dfTest = pd.DataFrame({
-    'Date': pd.date_range(start='2021-01-01', periods=5, freq='D'),
-    'Open': [100, 102, 104, 106, 108],
-    'High': [105, 107, 109, 111, 113],
-    'Low': [95, 97, 99, 101, 103],
-    'Close': [102, 104, 106, 108, 110]
-})
+    # Suponha que 'df' é o seu DataFrame com os dados das velas
+    dfTest = pd.DataFrame({
+        'Date': pd.date_range(start='2021-01-01', periods=5, freq='D'),
+        'Open': [100, 102, 104, 106, 108],
+        'High': [105, 107, 109, 111, 113],
+        'Low': [95, 97, 99, 101, 103],
+        'Close': [102, 104, 106, 108, 110]
+    })
 
 def create_dash_application(flask_app):
     dash_app = dash.Dash(server=flask_app, name="Candlestick", url_base_pathname='/dash/')

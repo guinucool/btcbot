@@ -7,9 +7,9 @@ def get_rate_table(tickers, period, interval) -> yf.Ticker.history:
 
 # Retorna o preço do Bitcoin em USD, bisk = "ask" ou "bid"
 # NOTE bid = preço mais alto que o comprador paga, ask = preço mais baixo que o vendedor aceita
-def get_rate_btc_usd_now(bisk) -> float:
+def get_rate_btc_usd_now() -> tuple[float, float]:
     response = requests.get("https://api.uphold.com/v0/ticker/BTC-USD")
-    return response.json()[bisk]
+    return response.json()["ask"], response.json()["bid"]
 
 # Retorna o fear and greed index
 def get_fng() -> float:

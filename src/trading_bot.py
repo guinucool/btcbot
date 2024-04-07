@@ -59,21 +59,26 @@ class Trading_bot:
         return False
 
     # Ciclo de feed
-    def cycle(self) -> None:
-        i = 1
-        ###
+    def cycle(self, counter = 0) -> None:
+        try:
+            bid, ask = api.get_rate_btc_usd_now()
+            self.btc_bisk = bid, ask
+        except Exception as e:
+            print("Error:", e)
+            return counter
+        if counter == self.cycles:
+            counter = 0
+            self.chart.add_candle(bid)
+        else:
+            counter += 1
+            self.chart.update_candle(bid)
+        return counter
+
+    # Ciclo de execução
+    def cycle_exec(self) -> None:
         counter = 0
         while True:
-            bid, ask = float(api.get_rate_btc_usd_now("bid")), float(api.get_rate_btc_usd_now("ask"))
-            self.btc_bisk = bid, ask
-            bid = self.chart.candles[-i].get_close()
-            self.btc_price = bid
-            if counter == self.cycles:
-                counter = 0
-                self.chart.add_candle(bid)
-            else:
-                counter += 1
-                self.chart.update_candle(bid)
+            counter = self.cycle(counter)
             time.sleep(self.secs)
 
     # Cálculo de indicadores
@@ -95,6 +100,6 @@ class Trading_bot:
         return inds
     
     def start(self):
+        cycle_thread = threading.Thread(target = lambda : self.cycle_exec())
+        cycle_thread.start()
         print("bot: online")
-        threading.Thread(target = lambda: self.cycle()).start()
-        print("bot: cycle started")
