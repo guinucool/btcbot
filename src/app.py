@@ -9,13 +9,6 @@ bot = Trading_bot(Wallet(1000), cycles=1, secs=2)
 bot.start()
 #dash = create_dash_application(app)
 
-@app.route('/price_change')
-def price_change():
-    percentage = bot.btc_bisk[0] / (bot.chart.alg_sma(50)) - 1
-    return jsonify({"priceChange": f"{percentage * bot.btc_bisk[0]}",
-                    "percentChange": f"{percentage}%",
-                    "direction": '🔼' if percentage > 0 else '🔽' if percentage < 0 else '🟰'})
-
 def get_buy_price():
     ask = bot.btc_bisk[1]
     return {"buyPrice": ask}
@@ -38,6 +31,13 @@ def buy_price():
 def sell_price():
     return jsonify(get_sell_price())
 
+@app.route('/price_change')
+def price_change():
+    percentage = (float(bot.btc_bisk[0]) / float(bot.chart.alg_sma(50))) * 100 - 1
+    return jsonify({"priceChange": f"{percentage * float(bot.btc_bisk[0]) / 100}",
+                    "percentChange": f"{percentage}%",
+                    "direction": '🔼' if percentage > 0 else '🔽' if percentage < 0 else '🟰'})
+
 @app.route('/wallet_USD')
 def wallet_USD():
     return jsonify(get_wallet_USD())
@@ -54,6 +54,6 @@ bot_active = False
 
 if __name__ == '__main__':
     if not bot_active:
-        Trading_bot(Wallet(1000), cycles=1, secs=5)
+        Trading_bot(Wallet(1000), cycles=1, secs=10)
         bot.start()
         app.run(debug=True)
