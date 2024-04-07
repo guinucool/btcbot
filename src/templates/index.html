@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <div class="dashboard">
@@ -17,9 +18,22 @@
                 </select>
             </div>
             <div class="prices">
-                <div class="buy">Buy: <span id="buyPrice">67692.603$</span></div>
-                <div class="sell">Sell: <span id="sellPrice">67650.038$</span></div>
+                <div class="buy">Buy: <span id="buyPrice">Loading...</span></div>
+                <div class="sell">Sell: <span id="sellPrice">Loading...</span></div>
             </div>
+            <script>
+                function fetchPrices() {
+                    $.getJSON('/buy_price', function(data) {
+                        $('#buyPrice').text(data.buyPrice + '$');
+                    });
+                    $.getJSON('/sell_price', function(data) {
+                        $('#sellPrice').text(data.sellPrice + '$');
+                    });
+                }
+        
+                // Atualiza os preços a cada segundo
+                setInterval(fetchPrices, 1000);
+            </script>
             <div class="price-change">
                 +165,4 (+0.03%) 🔼
             </div>

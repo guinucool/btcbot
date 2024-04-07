@@ -1,15 +1,29 @@
-# app.py
-from flask import Flask, render_template
-from dashapp import create_dash_application  # Certifique-se de ter a função que cria a aplicação Dash
+from flask import Flask, render_template, jsonify
+from dashapp import create_dash_application  # Assume que você tenha esta função
 
 app = Flask(__name__)
 
-# Crie a aplicação Dash e registre-a com o servidor Flask
-dash_app = create_dash_application(app)
+dash = create_dash_application(app)
+
+# Supondo que você tenha essas funções definidas no seu backend
+def get_buy_price():
+    # Retorna um valor fictício de compra. Substitua pela sua lógica de backend.
+    return {"buyPrice": 67692.603}
+
+def get_sell_price():
+    # Retorna um valor fictício de venda. Substitua pela sua lógica de backend.
+    return {"sellPrice": 67650.038}
+
+@app.route('/buy_price')
+def buy_price():
+    return jsonify(get_buy_price())
+
+@app.route('/sell_price')
+def sell_price():
+    return jsonify(get_sell_price())
 
 @app.route('/')
 def index():
-    # Renderiza o template 'index.html'
     return render_template('index.html')
 
 if __name__ == '__main__':
