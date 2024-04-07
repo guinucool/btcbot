@@ -92,8 +92,3 @@ class Trading_bot:
         print("bot: online")
         threading.Thread(target = lambda: self.cycle()).start()
         print("bot: cycle started")
-
-# Teste
-t = Trading_bot(Wallet(1000), secs=0.3)
-t.start()
-t.buy_btc(0.1)
