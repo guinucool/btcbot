@@ -1,4 +1,4 @@
-from backend.candle import Candle
+from candle import Candle
 
 # Classe de gráfico de vela
 class Candle_chart:

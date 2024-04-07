@@ -1,9 +1,9 @@
 import threading
 import time
 
-import backend.api_caller as api
-from backend.wallet import Wallet
-from backend.candle_chart import Candle_chart
+import api_caller as api
+from wallet import Wallet
+from candle_chart import Candle_chart
 
 # Classe do trading bot
 class Trading_bot:
@@ -37,7 +37,7 @@ class Trading_bot:
 
     # Transação
     def buy_btc(self, btc : float) -> bool:
-        rate = api.get_rate_btc_usd_now("bid")
+        rate = float(api.get_rate_btc_usd_now("bid"))
         try:
             self.wallet.add_transaction(btc, btc * rate, rate)
             return True
@@ -46,7 +46,7 @@ class Trading_bot:
         return False
 
     def sell_btc(self, btc : float) -> bool:
-        rate = api.get_rate_btc_usd_now("ask")
+        rate = float(api.get_rate_btc_usd_now("ask"))
         try:
             self.wallet.add_transaction(-btc, -btc * rate, rate)
             return True

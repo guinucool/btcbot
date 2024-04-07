@@ -4,11 +4,10 @@ from dash import dcc, html
 import plotly.graph_objs as go
 import pandas as pd
 
-from backend.trading_bot import Trading_bot, Wallet
+from trading_bot import Trading_bot, Wallet
 
 bot = Trading_bot(Wallet(1000), cycles=5, secs=10)
-
-candles = bot.get_chart()   
+candles = bot.get_chart()
 
 df = pd.DataFrame(candles)
 

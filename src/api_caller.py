@@ -23,7 +23,7 @@ class Rate_table:
     def __init__(self, currency : str) -> None:
         self.ticker = yf.Ticker(currency)
         self.last_table = None
-        yf.set_tz_cache_location("src/backend/__pycache__/yfinance_cache")
+        yf.set_tz_cache_location("src/__pycache__/yfinance_cache")
 
     def get_last_table(self) -> yf.Ticker.history:
         return self.last_table
